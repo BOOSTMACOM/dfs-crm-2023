@@ -1,2 +1,8 @@
 @import 'variables';
 @import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-icons/font/bootstrap-icons.scss';
+
+.fit-width {
+    width: 1px;
+    white-space: nowrap;
+}

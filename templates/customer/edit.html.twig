@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="container p-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-4">        
+            {{ form_start(new_customer_form) }}
+                {{ form_rest(new_customer_form) }}
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            {{ form_end(new_customer_form) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

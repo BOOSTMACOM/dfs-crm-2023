@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Company;
+use App\Model\ActionModel;
 use App\Model\PaginatedDataModel;
 use App\Repository\CompanyRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -30,7 +32,28 @@ class CompanyController extends AbstractController
                 'Adresse' => 'street',
                 'Ville' => 'city',
                 'CP' => 'zipCode'
+            ], [
+                new ActionModel('Modifer','warning','app_company_edit'),
+                new ActionModel('Détails','primary','app_company_show')
             ]))->getData()
         ]);
+    }
+
+    #[Route('/entreprise/{id}', name: 'app_company_show')]
+    public function show(Company $company)
+    {
+        return $this->render('company/show.html.twig', compact('company'));
+    }
+
+    #[Route('/entreprise/ajouter', name: 'app_company_add')]
+    public function new(Request $request)
+    {
+        return $this->render('company/add.html.twig');
+    }
+
+    #[Route('/entreprise/{id}/modifier', name: 'app_company_edit')]
+    public function edit(Company $company, Request $request)
+    {
+        return $this->render('company/edit.html.twig', compact('company'));
     }
 }

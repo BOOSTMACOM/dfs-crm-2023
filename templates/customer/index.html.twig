@@ -4,6 +4,11 @@
 
 {% block body %}
 <div class="container p-5">
+    <div class="row">
+        <div class="col mb-3 text-end">
+            <a href="{{ path('app_customer_new') }}" class="btn btn-primary">Créer un nouveau client</a>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-12">
             {% include 'partials/_paginated-data-table.html.twig' with {'data': paginated_data } %}

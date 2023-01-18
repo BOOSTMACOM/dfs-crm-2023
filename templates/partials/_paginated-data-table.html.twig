@@ -5,6 +5,11 @@
             {% for prop_header, prop_name in data.props %}
             <th>{{ prop_header }}</th>
             {% endfor %}
+
+            {% if data.actions|length > 0 %}
+            <th colspan="{{ data.actions|length }}">Actions</th>
+            {% endif %}
+            
         </tr>
     </thead>
 
@@ -14,6 +19,12 @@
             <td>{{ item.id }}</td>
             {% for prop_header, prop_name in data.props %}
             <td>{{ attribute(item, prop_name) }}</td>
+            {% endfor %}
+
+            {% for action in data.actions %}
+            {% set action_route = action.route %}
+            {% set action_param = action.param %}
+            <td class="fit-width"><a href="{{ path(action_route, { (action_param): attribute(item, action_param) }) }}" class="btn btn-sm btn-{{ action.color }}">{{ action.label }}</a></td>
             {% endfor %}
         </tr>
         {% endfor %}
