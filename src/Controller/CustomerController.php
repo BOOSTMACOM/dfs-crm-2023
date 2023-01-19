@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Cmd\Customer\EditCustomerFormCmd;
 use App\Entity\Customer;
-use App\Form\CustomerFormType;
 use App\Model\ActionModel;
+use App\Form\CustomerFormType;
+use App\Form\EditCustomerFormType;
+use App\Service\CustomerService;
 use App\Model\PaginatedDataModel;
 use App\Repository\CustomerRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -17,12 +20,12 @@ class CustomerController extends AbstractController
 {
     #[Route('/clients', name: 'app_customers')]
     public function index(
-        CustomerRepository $customerRepository,
+        CustomerService $customerService,
         PaginatorInterface $paginator,
         Request $request): Response
     {
         $items = $paginator->paginate(
-            $customerRepository->getPaginationQuery(), /* query NOT result */
+            $customerService->getAllQuery(), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
         );    
@@ -31,9 +34,8 @@ class CustomerController extends AbstractController
             'paginated_data' => (new PaginatedDataModel($items, [
                 'Nom' => 'lastname',
                 'Prenom' => 'firstname',
-                'Email' => 'email',
+                'Poste' => 'job',
                 'Entreprise' => 'company',
-                'Créé par' => 'createdBy'
             ],[
                 new ActionModel('Modifier','warning','app_customer_edit'),
                 new ActionModel('Détails','primary','app_customer_edit')
@@ -43,19 +45,21 @@ class CustomerController extends AbstractController
     }
 
     #[Route('/client/ajouter', name: 'app_customer_new')]
-    public function new(Request $request, CustomerRepository $customerRepository) : Response
+    public function new(Request $request, CustomerService $service) : Response
     {
-        $customer = new Customer();
-        $form = $this->createForm(CustomerFormType::class, $customer);
+        $cmd = new EditCustomerFormCmd();
+        $form = $this->createForm(EditCustomerFormType::class, $cmd);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
             // Mettre en persistence les données
-            $customer->setCreatedBy($this->getUser());
+            //$customer->setCreatedBy($this->getUser());
 
             // On ajoute en bdd
-            $customerRepository->save($customer, true);
+            //$customerRepository->save($customer, true);
+
+            $service->create($cmd, $this->getUser());
 
             $this->addFlash('success', 'Client ajouté à la base de donnée');
 

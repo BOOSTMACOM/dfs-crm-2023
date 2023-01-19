@@ -6,7 +6,7 @@ interface AppServiceInterface {
 
     function get(int $id);
 
-    function create();
+    //function create(...$vars);
 
     function update();
 
