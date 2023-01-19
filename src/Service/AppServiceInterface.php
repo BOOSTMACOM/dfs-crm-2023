@@ -8,7 +8,7 @@ interface AppServiceInterface {
 
     //function create(...$vars);
 
-    function update();
+    //function update();
 
     function delete();
 }

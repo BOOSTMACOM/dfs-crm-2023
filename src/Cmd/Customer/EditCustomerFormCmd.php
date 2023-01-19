@@ -3,6 +3,7 @@ namespace App\Cmd\Customer;
 
 use App\Entity\Job;
 use App\Entity\Company;
+use App\Entity\Customer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EditCustomerFormCmd
@@ -17,9 +18,21 @@ class EditCustomerFormCmd
     #[Assert\Email()]
     private ?string $email;
 
-    private ?Company $company;
+    private ?Company $company = null;
 
-    private ?Job $job;
+    private ?Job $job = null;
+
+    public function __construct(?Customer $customer = null)
+    {
+        if($customer)
+        {
+            $this->firstname = $customer->getFirstname();
+            $this->lastname = $customer->getLastname();
+            $this->email = $customer->getEmail();
+            $this->company = $customer->getCompany();
+            $this->job = $customer->getJob();
+        }
+    }
 
     /**
      * Get the value of firstname

@@ -26,10 +26,14 @@ class EditCustomerFormType extends AbstractType
             ->add('company', EntityType::class, [
                 'class' => Company::class,
                 'choice_label' => 'name',
+                'required' => false,
+                'placeholder' => "Aucune"
             ])
             ->add('job', EntityType::class, [
                 'class' => Job::class,
                 'choice_label' => 'title',
+                'required' => false,
+                'placeholder' => "Aucun"
             ])
         ;
     }

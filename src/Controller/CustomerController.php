@@ -53,12 +53,6 @@ class CustomerController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-            // Mettre en persistence les données
-            //$customer->setCreatedBy($this->getUser());
-
-            // On ajoute en bdd
-            //$customerRepository->save($customer, true);
-
             $service->create($cmd, $this->getUser());
 
             $this->addFlash('success', 'Client ajouté à la base de donnée');
@@ -73,26 +67,34 @@ class CustomerController extends AbstractController
 
     #[Route('/client/modifier/{id}', name:"app_customer_edit")]
     public function edit(
-        Customer $customer = null,
-        Request $request, 
-        CustomerRepository $customerRepository
+        int $id,
+        Request $request,
+        CustomerService $service,
     ) : Response
     {
-        $form = $this->createForm(CustomerFormType::class, $customer);
-        $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
+        try{
+            $cmd = $service->getEditCustomerFormCmdFromEntityById($id);
+            $form = $this->createForm(EditCustomerFormType::class, $cmd);
+            $form->handleRequest($request);
+
+            if($form->isSubmitted() && $form->isValid())
+            {
+                $service->update($id, $cmd);
+                $this->addFlash('success', 'Client modifié');
+                return $this->redirectToRoute('app_customers');
+            }
+
+            return $this->render('customer/edit.html.twig', [
+                'new_customer_form' => $form->createView()
+            ]);
+
+        }
+        catch(\Exception $e)
         {
-            // On ajoute en bdd
-            $customerRepository->save($customer, true);
-
-            $this->addFlash('success', 'Client modifié');
-
+            $this->addFlash('danger', $e->getMessage());
             return $this->redirectToRoute('app_customers');
         }
-
-        return $this->render('customer/edit.html.twig', [
-            'new_customer_form' => $form->createView()
-        ]);
+        
     }
 }
