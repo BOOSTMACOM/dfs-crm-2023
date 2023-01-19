@@ -13,18 +13,17 @@
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
 
-		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-		{% endblock %}
+		{{ encore_entry_script_tags('app') }}
+		{% block javascripts %}	{% endblock %}
 	</head>
 	<body>
-		<div class="d-flex">
-			{% if is_granted('ROLE_USER') %}
-				{% include 'partials/_sidebar.html.twig' %}
-			{% endif %}
+		{% if is_granted('ROLE_USER') %}
+			{% include 'partials/_sidebar.html.twig' %}
+		{% endif %}
 
-			{% block body %}{% endblock %}
-		</div>
+		<main style="padding-left: 280px">
+		{% block body %}{% endblock %}
+		</main>
 
         <div class="toast-container position-fixed bottom-0 end-0 p-3">
 		{% for status, messages in app.flashes %}
