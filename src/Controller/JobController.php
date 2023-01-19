@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\ActionModel;
 use App\Service\JobService;
 use App\Model\PaginatedDataModel;
 use Knp\Component\Pager\PaginatorInterface;
@@ -19,7 +20,7 @@ class JobController extends AbstractController
         Request $request
     ): Response
     {
-        
+
         $pagination = $paginatorInterface->paginate(
             $service->getAllQuery(),
             $request->query->getInt('page', 1),
@@ -29,7 +30,10 @@ class JobController extends AbstractController
         return $this->render('job/index.html.twig', [
             'paginated_data' => (new PaginatedDataModel($pagination, [
                 'Titre' => 'title',
-            ],[]
+            ],[
+                new ActionModel('Modifer','warning','app_company_edit'),
+                new ActionModel('Détails','primary','app_company_show')
+            ]
             ))->getData()
         ]);
     }

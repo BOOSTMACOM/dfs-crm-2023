@@ -42,7 +42,10 @@ class AppFixtures extends Fixture
         {
             $company = (new Company())
             ->setName('Entreprise ' . $i)
-            ->setSiret($this->randomizeSiret());
+            ->setSiret($this->randomizeSiret())
+            ->setStreet('Rue' . $i)
+            ->setCity('Ville' . $i)
+            ->setZipCode($this->randomizeZipCode());
 
             $manager->persist($company);
         }
@@ -69,5 +72,18 @@ class AppFixtures extends Fixture
             $siret .= random_int(1,9);
         }
         return $siret;
+    }
+
+    /**
+     * @return string
+     */
+    private function randomizeZipCode() : string
+    {
+        $zipcode = '';
+        for($i=0;$i<5;$i++)
+        {
+            $zipcode .= random_int(1,9);
+        }
+        return $zipcode;
     }
 }
