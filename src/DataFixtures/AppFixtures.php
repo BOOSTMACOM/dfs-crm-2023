@@ -2,11 +2,12 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Job;
+use App\Entity\User;
 use App\Entity\Company;
 use App\Entity\Customer;
-use App\Entity\User;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
@@ -44,6 +45,14 @@ class AppFixtures extends Fixture
             ->setSiret($this->randomizeSiret());
 
             $manager->persist($company);
+        }
+
+        for($i = 0; $i < 50; $i++)
+        {
+            $job = (new Job())
+            ->setTitle('Poste ' . $i);
+
+            $manager->persist($job);
         }
 
         $manager->flush();

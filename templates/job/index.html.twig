@@ -1,20 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello JobController!{% endblock %}
+{% block title %}Gestion des postes{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/repositories/symfo-dfs-2023/src/Controller/JobController.php'|file_link(0) }}">src/Controller/JobController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/repositories/symfo-dfs-2023/templates/job/index.html.twig'|file_link(0) }}">templates/job/index.html.twig</a></code></li>
-    </ul>
+<div class="container p-5">
+    {# <div class="row">
+        <div class="col mb-3 text-end">
+            <a href="{{ path('app_customer_new') }}" class="btn btn-primary">Créer un nouveau client</a>
+        </div>
+    </div> #}
+    <div class="row justify-content-center">
+        <div class="col-12">
+            {% include 'partials/_paginated-data-table.html.twig' with {'data': paginated_data } %}
+        </div>
+    </div>
 </div>
 {% endblock %}

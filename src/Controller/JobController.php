@@ -3,17 +3,34 @@
 namespace App\Controller;
 
 use App\Service\JobService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Model\PaginatedDataModel;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class JobController extends AbstractController
 {
     #[Route('/job', name: 'app_job')]
-    public function index(JobService $service): Response
+    public function index(
+        JobService $service, 
+        PaginatorInterface $paginatorInterface,
+        Request $request
+    ): Response
     {
+        
+        $pagination = $paginatorInterface->paginate(
+            $service->getAllQuery(),
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render('job/index.html.twig', [
-            'jobs' => $service->getAll(),
+            'paginated_data' => (new PaginatedDataModel($pagination, [
+                'Titre' => 'title',
+            ],[]
+            ))->getData()
         ]);
     }
 }

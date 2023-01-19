@@ -16,18 +16,19 @@ class JobService implements AppServiceInterface {
 
     public function getAll()
     {
-        $jobs = $this->repository->findAll();
-        $dtos = [];
-        foreach($jobs as $job)
-        {
-            $dtos[] = new JobItemDTO($job);
-        }
-        return $dtos;
+        return $this->getAllQuery()->getResult();
+    }
+
+    public function getAllQuery()
+    {
+        $query = 'NEW ' . JobItemDTO::class . '(j.id, j.title)';
+        return $this->repository->createQueryBuilder('j')->select($query)->getQuery();
     }
 
     public function get(int $id)
     {
-
+        $job = $this->repository->find($id);
+        return new JobItemDTO($job->getId(), $job->getTitle());
     }
 
     public function create()

@@ -9,10 +9,10 @@ class JobItemDTO
 
     private string $title;
 
-    public function __construct(Job $job)
+    public function __construct(int $id, string $title)
     {
-        $this->id = $job->getId();
-        $this->title = $job->getTitle();
+        $this->id = $id;
+        $this->title = $title;
     }
 
     /**
